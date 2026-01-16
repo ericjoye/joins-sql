@@ -1,0 +1,282 @@
+================================================================================
+SQL JOINS PORTFOLIO PROJECT - SAMPLE QUERY RESULTS
+================================================================================
+
+This file shows the expected output for each query in sql_joins_examples.sql
+Run these queries to verify your setup is correct.
+
+================================================================================
+1. INNER JOIN - Example 1.1
+Get employees with their department information
+================================================================================
+
+employee_id | first_name | last_name  | salary    | department_name | location
+------------|------------|------------|-----------|-----------------|-------------
+101         | John       | Smith      | 85000.00  | Engineering     | New York
+102         | Sarah      | Johnson    | 92000.00  | Engineering     | New York
+103         | Michael    | Williams   | 68000.00  | Marketing       | Los Angeles
+104         | Emily      | Brown      | 71000.00  | Marketing       | Los Angeles
+105         | David      | Jones      | 75000.00  | Sales           | Chicago
+107         | James      | Martinez   | 62000.00  | HR              | Boston
+108         | Maria      | Rodriguez  | 88000.00  | Engineering     | New York
+
+(7 rows) - NOTE: Lisa Garcia excluded (no department)
+
+
+================================================================================
+1. INNER JOIN - Example 1.2
+Get employees and their project assignments
+================================================================================
+
+first_name | last_name  | project_name              | role                | hours_worked
+-----------|------------|---------------------------|---------------------|-------------
+Emily      | Brown      | Marketing Campaign Q1     | Content Creator     | 110
+David      | Jones      | Marketing Campaign Q1     | Sales Coordinator   | 60
+Sarah      | Johnson    | Website Redesign          | Backend Developer   | 100
+Sarah      | Johnson    | Mobile App Development    | Senior Developer    | 95
+James      | Martinez   | Database Migration        | Project Manager     | 75
+Maria      | Rodriguez  | Database Migration        | Database Architect  | 130
+John       | Smith      | Website Redesign          | Lead Developer      | 120
+John       | Smith      | Mobile App Development    | Technical Lead      | 80
+Michael    | Williams   | Marketing Campaign Q1     | Campaign Manager    | 140
+
+(9 rows)
+
+
+================================================================================
+2. LEFT JOIN - Example 2.1
+Get all employees and their departments (including those without departments)
+================================================================================
+
+employee_id | first_name | last_name  | salary    | department_name | location
+------------|------------|------------|-----------|-----------------|-------------
+101         | John       | Smith      | 85000.00  | Engineering     | New York
+102         | Sarah      | Johnson    | 92000.00  | Engineering     | New York
+103         | Michael    | Williams   | 68000.00  | Marketing       | Los Angeles
+104         | Emily      | Brown      | 71000.00  | Marketing       | Los Angeles
+105         | David      | Jones      | 75000.00  | Sales           | Chicago
+106         | Lisa       | Garcia     | 65000.00  | NULL            | NULL
+107         | James      | Martinez   | 62000.00  | HR              | Boston
+108         | Maria      | Rodriguez  | 88000.00  | Engineering     | New York
+
+(8 rows) - NOTE: Lisa Garcia included with NULL department
+
+
+================================================================================
+2. LEFT JOIN - Example 2.2
+Get all projects and their assigned employees (including projects without employees)
+================================================================================
+
+project_name              | budget      | first_name | last_name | role
+--------------------------|-------------|------------|-----------|--------------------
+Website Redesign          | 150000.00   | John       | Smith     | Lead Developer
+Website Redesign          | 150000.00   | Sarah      | Johnson   | Backend Developer
+Mobile App Development    | 300000.00   | John       | Smith     | Technical Lead
+Mobile App Development    | 300000.00   | Sarah      | Johnson   | Senior Developer
+Marketing Campaign Q1     | 75000.00    | Michael    | Williams  | Campaign Manager
+Marketing Campaign Q1     | 75000.00    | Emily      | Brown     | Content Creator
+Marketing Campaign Q1     | 75000.00    | David      | Jones     | Sales Coordinator
+Database Migration        | 200000.00   | James      | Martinez  | Project Manager
+Database Migration        | 200000.00   | Maria      | Rodriguez | Database Architect
+AI Integration            | 500000.00   | NULL       | NULL      | NULL
+
+(10 rows) - NOTE: AI Integration project has no employees assigned
+
+
+================================================================================
+3. RIGHT JOIN - Example 3.1
+Get all departments and their employees (including departments without employees)
+================================================================================
+
+department_name | location     | first_name | last_name | salary
+----------------|--------------|------------|-----------|----------
+Engineering     | New York     | John       | Smith     | 85000.00
+Engineering     | New York     | Sarah      | Johnson   | 92000.00
+Engineering     | New York     | Maria      | Rodriguez | 88000.00
+Finance         | New York     | NULL       | NULL      | NULL
+HR              | Boston       | James      | Martinez  | 62000.00
+Marketing       | Los Angeles  | Michael    | Williams  | 68000.00
+Marketing       | Los Angeles  | Emily      | Brown     | 71000.00
+Sales           | Chicago      | David      | Jones     | 75000.00
+
+(8 rows) - NOTE: Finance department has no employees
+
+
+================================================================================
+4. FULL OUTER JOIN - Example 4.1
+Get all employees and departments (show unmatched from both sides)
+================================================================================
+
+employee_id | first_name | last_name | department_id | department_name
+------------|------------|-----------|---------------|------------------
+101         | John       | Smith     | 1             | Engineering
+102         | Sarah      | Johnson   | 1             | Engineering
+103         | Michael    | Williams  | 2             | Marketing
+104         | Emily      | Brown     | 2             | Marketing
+105         | David      | Jones     | 3             | Sales
+106         | Lisa       | Garcia    | NULL          | NULL
+107         | James      | Martinez  | 4             | HR
+108         | Maria      | Rodriguez | 1             | Engineering
+NULL        | NULL       | NULL      | 5             | Finance
+
+(9 rows) - NOTE: Shows both Lisa Garcia (no dept) and Finance (no employees)
+
+
+================================================================================
+5. CROSS JOIN - Example 5.1
+Get all possible employee-project combinations (PARTIAL RESULTS SHOWN)
+================================================================================
+
+first_name | last_name | project_name
+-----------|-----------|---------------------------
+Emily      | Brown     | AI Integration
+Emily      | Brown     | Database Migration
+Emily      | Brown     | Marketing Campaign Q1
+Emily      | Brown     | Mobile App Development
+Emily      | Brown     | Website Redesign
+Lisa       | Garcia    | AI Integration
+Lisa       | Garcia    | Database Migration
+...
+(40 total rows: 8 employees × 5 projects)
+
+
+================================================================================
+6. SELF JOIN - Example 6.1
+Find employees in the same department (employee pairs)
+================================================================================
+
+employee1_first | employee1_last | employee2_first | employee2_last | department_name
+----------------|----------------|-----------------|----------------|----------------
+John            | Smith          | Sarah           | Johnson        | Engineering
+John            | Smith          | Maria           | Rodriguez      | Engineering
+Sarah           | Johnson        | Maria           | Rodriguez      | Engineering
+Michael         | Williams       | Emily           | Brown          | Marketing
+
+(4 rows) - Shows unique pairs of employees sharing departments
+
+
+================================================================================
+ADVANCED QUERY A1
+Department employee count and average salary
+================================================================================
+
+department_name | location     | employee_count | avg_salary
+----------------|--------------|----------------|------------
+Engineering     | New York     | 3              | 88333.33
+Marketing       | Los Angeles  | 2              | 69500.00
+Sales           | Chicago      | 1              | 75000.00
+HR              | Boston       | 1              | 62000.00
+Finance         | New York     | 0              | NULL
+
+(5 rows)
+
+KEY INSIGHT: Finance has 0 employees (LEFT JOIN shows empty departments)
+
+
+================================================================================
+ADVANCED QUERY A2
+Employees working on multiple projects
+================================================================================
+
+first_name | last_name | project_count | total_hours
+-----------|-----------|---------------|-------------
+John       | Smith     | 2             | 200
+Sarah      | Johnson   | 2             | 195
+
+(2 rows)
+
+KEY INSIGHT: HAVING clause filters for employees on multiple projects
+
+
+================================================================================
+ADVANCED QUERY A3
+Projects with budget and total hours worked
+================================================================================
+
+project_name              | budget      | team_size | total_hours | cost_per_hour
+--------------------------|-------------|-----------|-------------|---------------
+Website Redesign          | 150000.00   | 2         | 220         | 681.82
+Mobile App Development    | 300000.00   | 2         | 175         | 1714.29
+Marketing Campaign Q1     | 75000.00    | 3         | 310         | 241.94
+Database Migration        | 200000.00   | 2         | 205         | 975.61
+AI Integration            | 500000.00   | 0         | NULL        | NULL
+
+(5 rows)
+
+KEY INSIGHT: AI Integration has no hours logged yet (team_size = 0)
+
+
+================================================================================
+ADVANCED QUERY A4
+Find employees not assigned to any project
+================================================================================
+
+employee_id | first_name | last_name | department_name
+------------|------------|-----------|------------------
+106         | Lisa       | Garcia    | NULL
+
+(1 row)
+
+KEY INSIGHT: LEFT JOIN + WHERE IS NULL pattern finds unassigned employees
+
+
+================================================================================
+ADVANCED QUERY A5
+Department project involvement
+================================================================================
+
+department_name | project_name              | employees_assigned
+----------------|---------------------------|-------------------
+Engineering     | Website Redesign          | 2
+Engineering     | Mobile App Development    | 2
+Engineering     | Database Migration        | 1
+Marketing       | Marketing Campaign Q1     | 2
+Sales           | Marketing Campaign Q1     | 1
+HR              | Database Migration        | 1
+
+(6 rows)
+
+KEY INSIGHT: Shows cross-departmental collaboration on projects
+
+
+================================================================================
+VERIFICATION QUERIES
+================================================================================
+
+Total Records Check:
+--------------------
+SELECT COUNT(*) FROM employees;           -- Should return: 8
+SELECT COUNT(*) FROM departments;         -- Should return: 5
+SELECT COUNT(*) FROM projects;            -- Should return: 5
+SELECT COUNT(*) FROM employee_projects;   -- Should return: 9
+
+
+Data Integrity Check:
+---------------------
+-- Employees without departments
+SELECT COUNT(*) FROM employees WHERE department_id IS NULL;  -- Should return: 1
+
+-- Departments without employees
+SELECT COUNT(*) FROM departments d
+LEFT JOIN employees e ON d.department_id = e.department_id
+WHERE e.employee_id IS NULL;  -- Should return: 1
+
+-- Projects without employees
+SELECT COUNT(*) FROM projects p
+LEFT JOIN employee_projects ep ON p.project_id = ep.project_id
+WHERE ep.employee_id IS NULL;  -- Should return: 1
+
+
+================================================================================
+TESTING YOUR UNDERSTANDING
+================================================================================
+
+Try modifying these queries to answer:
+
+1. Which department has the highest total salary cost?
+2. What is the average hours worked per project role?
+3. Which employee has worked the most total hours?
+4. Find projects with only one team member
+5. Calculate the percentage of employees assigned to projects
+
+================================================================================
